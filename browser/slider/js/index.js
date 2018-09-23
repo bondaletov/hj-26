@@ -13,7 +13,7 @@ const sliderDomElement = document.getElementById('slider');
         const dataItem = dataArr[idx];
         idx++;
         idx < len ? changeNext() : idx = 0;
-        setTimeout(iterator, 500);
+        setTimeout(iterator, 5000);
     }
 
     function changeNext() {
