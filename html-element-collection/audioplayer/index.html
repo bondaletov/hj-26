@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Задача 3. Аудиоплеер | Домашнее задание к лекции 1.2</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="mediaplayer">
+		<audio src="https://d34x6xks9kc6p2.cloudfront.net/540997b0-a35f-4b69-86d6-b1c925c4a264/540997b0-a35f-4b69-86d6-b1c925c4a264.mp3"></audio>
+		<div class="discarea">
+			<div class="disc">
+			</div>
+			<div class="stylus">
+				<div class="pivot"></div>
+				<div class="arm"></div>
+				<div class="head"></div>
+			</div>
+		</div>
+		<div class="controls">
+			<span class="title" title="LA Chill Tour"></span>
+			<div class="buttons">
+				<button class="back">
+					<i class="fa fa-backward"></i>
+				</button>
+				<button class="playstate">
+					<i class="fa fa-play"></i>
+					<i class="fa fa-pause"></i>
+				</button>
+				<button class="stop">
+					<i class="fa fa-stop"></i>
+				</button>
+				<button class="next">
+					<i class="fa fa-forward"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const data = ['LA Chill Tour', 'LA Fusion Jam', 'This is it band'];
+		const controlData = {
+			DataSet: data,
+			currentSongId: 0,
+			setCurrentSong: function (direction) {				
+				switch (direction) {
+					case 'back':
+						if (this.currentSongId === 0) {
+							this.currentSongId = this.DataSet.length - 1;
+						} else {
+							this.currentSongId--;
+						}
+						break;
+					case 'next':
+						if (this.currentSongId === this.DataSet.length - 1) {
+							this.currentSongId = 0;
+						} else {
+							this.currentSongId++;
+						}
+						break;
+
+					default:
+						throw new Error('MY HUMAN NOT UNDERSTANDS ME :`-(');
+						break;
+				}
+
+				
+				audio.src = `mp3/${this.DataSet[this.currentSongId]}.mp3`;
+				audio.pause();
+				audio.load();
+				audio.play();
+				this.toggleUiButton(true);
+				this.changePlayerTitle();
+			},
+			playCurrentSong: function () {
+				audio.play();
+				this.toggleUiButton(true);
+			},
+			stopCurrentSong: function () {
+				audio.pause();
+				audio.currentTime = 0;
+				this.toggleUiButton();
+			},
+			changePlayerTitle: function () {
+				title.textContent = this.DataSet[this.currentSongId];
+			},
+			toggleUiButton: function (addClass = false) {
+				addClass ? mediaplayer.classList.add('play') : mediaplayer.classList.toggle('play');
+			}
+		};
+
+
+		const mediaplayer = document.querySelector('.mediaplayer');
+		const audio = mediaplayer.getElementsByTagName('audio')[0];
+		const controls = mediaplayer.getElementsByTagName('button');
+		const title = mediaplayer.querySelector('.title');
+
+		console.log(controls)
+		const backBtn = controls.item(0);
+		const playBtn = controls.item(1);
+		const stopBtn = controls.item(2);
+		const nextBtn = controls.item(3);
+
+		backBtn.onclick = function (e, direction = 'back') {
+			controlData.setCurrentSong(direction);
+		}
+		playBtn.onclick = function () {
+			controlData.playCurrentSong();
+		}
+		stopBtn.onclick = function () {
+			controlData.stopCurrentSong();
+		}
+		nextBtn.onclick = function (e, direction = 'next') {
+			controlData.setCurrentSong(direction);
+		}
+	</script>
+
+</body>
+
+</html>
