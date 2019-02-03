@@ -11,38 +11,58 @@
 
 <body>
 	<ul class="drum-kit">
-		<li class="drum-kit__drum key-clap">
+		<li class="drum-kit__drum key-clap" data-track="clap">
 			<span class="drum-kit__drum__type">Clap</span>
-			<audio src="wav/clap.wav" />
 		</li>
-		<li class="drum-kit__drum key-hihat">
+		<li class="drum-kit__drum key-hihat" data-track="hihat">
 			<span class="drum-kit__drum__type">Hihat</span>
-			<audio src="wav/hihat.wav" />
 		</li>
-		<li class="drum-kit__drum key-kick">
+		<li class="drum-kit__drum key-kick" data-track="kick">
 			<span class="drum-kit__drum__type">Kick</span>
-			<audio src="wav/kick.wav" />
 		</li>
-		<li class="drum-kit__drum key-openhat">
+		<li class="drum-kit__drum key-openhat" data-track="openhat">
 			<span class="drum-kit__drum__type">Openhat</span>
-			<audio src="wav/openhat.wav" />
 		</li>
-		<li class="drum-kit__drum key-boom">
+		<li class="drum-kit__drum key-boom" data-track="boom">
 			<span class="drum-kit__drum__type">Boom</span>
-			<audio src="wav/boom.wav" />
 		</li>
-		<li class="drum-kit__drum key-ride">
+		<li class="drum-kit__drum key-ride" data-track="ride">
 			<span class="drum-kit__drum__type">Ride</span>
-			<audio src="wav/ride.wav" />
 		</li>
 	</ul>
 
 	<script>
 		const allDrumElements = document.getElementsByClassName('drum-kit__drum');
+		const playLog = [];
+		let isPlayed = false;
 
 		for (const drumElement of allDrumElements) {
-			drumElement.addEventListener('click', (e) => (e.target).querySelector('audio').play());
+			drumElement.addEventListener('click', (e) => {
+				const track = e.target.dataset.track || e.target.parentElement.dataset.track;
+				playLog.push(track);
+			});
 		}
+
+		function observable() {
+			if(playLog.length && !isPlayed) {
+				isPlayed = true;
+				const track = playLog.shift();
+				const song = new Audio(`wav/${track}.wav`);
+				song.play();
+				song.addEventListener('ended', () =>  { 
+					song.pause();
+					song.removeAttribute('src');
+					song.load();
+					isPlayed = false;
+				 });
+			}
+		}
+
+		setTimeout(function observer() {
+			observable();
+			setTimeout(observer, 100);
+		}, 2000);
+
 	</script>
 </body>
 

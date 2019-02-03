@@ -42,10 +42,14 @@
 	</div>
 
 	<script>
+		const STOPPEDBY = 0;
+		const PLAYS = 1;
+
 		const data = ['LA Chill Tour', 'LA Fusion Jam', 'This is it band'];
 		const controlData = {
 			DataSet: data,
 			currentSongId: 0,
+			status: STOPPEDBY,
 			setCurrentSong: function (direction) {				
 				switch (direction) {
 					case 'back':
@@ -68,25 +72,35 @@
 						break;
 				}
 
-				
 				audio.src = `mp3/${this.DataSet[this.currentSongId]}.mp3`;
-				audio.pause();
 				audio.load();
-				audio.play();
-				this.toggleUiButton(true);
+				if (this.status === PLAYS) {
+					audio.play();
+				}
+
 				this.changePlayerTitle();
 			},
 			playCurrentSong: function () {
-				audio.play();
-				this.toggleUiButton(true);
+				if (audio.paused) {
+					audio.play();
+					this.status = PLAYS;
+					this.toggleUiButton(true);
+				} else {
+					audio.pause();
+					this.status = STOPPEDBY;
+					this.toggleUiButton();
+				}
 			},
 			stopCurrentSong: function () {
-				audio.pause();
-				audio.currentTime = 0;
-				this.toggleUiButton();
+				if (!audio.paused) {
+					audio.pause();
+					audio.currentTime = 0;
+					this.status = STOPPEDBY;
+					this.toggleUiButton();
+				}
 			},
 			changePlayerTitle: function () {
-				title.textContent = this.DataSet[this.currentSongId];
+				title.title = this.DataSet[this.currentSongId];
 			},
 			toggleUiButton: function (addClass = false) {
 				addClass ? mediaplayer.classList.add('play') : mediaplayer.classList.toggle('play');
@@ -99,7 +113,7 @@
 		const controls = mediaplayer.getElementsByTagName('button');
 		const title = mediaplayer.querySelector('.title');
 
-		console.log(controls)
+		// console.log(controls)
 		const backBtn = controls.item(0);
 		const playBtn = controls.item(1);
 		const stopBtn = controls.item(2);
