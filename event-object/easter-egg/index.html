@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Задача 2. «Пасхалка» | Домашнее задание к лекции 2.1</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://use.fontawesome.com/70378a66b8.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="#">Главная</a>
+    <a href="#">Статьи</a>
+    <a href="#">Новости</a>
+    <a href="#">Контакты</a>
+  </nav>
+
+  <main>
+    <div class="menu-tip">
+      <div class="menu-icon">
+        <i class="fa fa-bars fa-2x" aria-hidden="true"></i>
+      </div>
+    </div>
+
+    <h1>Контент</h1>
+
+    <div class="secret">
+      <svg viewBox="0 0 600 300">
+
+        <!-- Symbol -->
+        <symbol id="s-text">
+          <text text-anchor="middle"
+                  x="50%" y="50%" dy=".35em">
+             нетология
+           </text>
+        </symbol>
+
+        <!-- Duplicate symbols -->
+        <use xlink:href="#s-text" class="text"></use>
+        <use xlink:href="#s-text" class="text"></use>
+        <use xlink:href="#s-text" class="text"></use>
+        <use xlink:href="#s-text" class="text"></use>
+        <use xlink:href="#s-text" class="text"></use>
+      </svg>
+    </div>
+  </main>
+
+  <script>
+    const keyboardLoggerState = [];
+    const codeDict = ['KeyY', 'KeyT', 'KeyN', 'KeyJ', 'KeyK', 'KeyJ', 'KeyU', 'KeyB', 'KeyZ'];
+
+    document.addEventListener ("keydown", function (e) {
+      if (e.ctrlKey  &&  e.altKey  &&  e.code === 'KeyT') {
+        document.querySelector('nav').classList.toggle('visible');
+      }
+      keyboardLoggerState.push(e.code);
+      const checkPassed = checkEasterEgg();
+      if (checkPassed) {
+        document.querySelector('.secret').classList.add('visible');
+      }
+    });
+
+    function checkEasterEgg() {
+      if (keyboardLoggerState.length < codeDict.length) {
+        return;
+      }
+
+      const croppedDamp = keyboardLoggerState.slice(-codeDict.length);
+      return JSON.stringify(croppedDamp)==JSON.stringify(codeDict);
+    }
+  </script>
+</body>
+</html>
