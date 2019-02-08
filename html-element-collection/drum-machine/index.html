@@ -36,15 +36,22 @@
 		const playLog = [];
 		let isPlayed = false;
 
-		for (const drumElement of allDrumElements) {
+		for(var i = 0; i < allDrumElements.length; i++){
+			const drumElement = allDrumElements[i];
 			drumElement.addEventListener('click', (e) => {
 				const track = e.target.dataset.track || e.target.parentElement.dataset.track;
 				playLog.push(track);
 			});
 		}
+		// for (const drumElement of allDrumElements) {
+		// 	drumElement.addEventListener('click', (e) => {
+		// 		const track = e.target.dataset.track || e.target.parentElement.dataset.track;
+		// 		playLog.push(track);
+		// 	});
+		// }
 
 		function observable() {
-			if(playLog.length && !isPlayed) {
+			if (playLog.length && !isPlayed) {
 				isPlayed = true;
 				const track = playLog.shift();
 				const song = new Audio(`wav/${track}.wav`);
