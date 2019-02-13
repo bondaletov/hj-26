@@ -1,76 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Задача 2. Ударная установка | Домашнее задание к лекции 1.2</title>
-	<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Задача 2. Ударная установка | Домашнее задание к лекции 1.2</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-	<ul class="drum-kit">
-		<li class="drum-kit__drum key-clap" data-track="clap">
-			<span class="drum-kit__drum__type">Clap</span>
-		</li>
-		<li class="drum-kit__drum key-hihat" data-track="hihat">
-			<span class="drum-kit__drum__type">Hihat</span>
-		</li>
-		<li class="drum-kit__drum key-kick" data-track="kick">
-			<span class="drum-kit__drum__type">Kick</span>
-		</li>
-		<li class="drum-kit__drum key-openhat" data-track="openhat">
-			<span class="drum-kit__drum__type">Openhat</span>
-		</li>
-		<li class="drum-kit__drum key-boom" data-track="boom">
-			<span class="drum-kit__drum__type">Boom</span>
-		</li>
-		<li class="drum-kit__drum key-ride" data-track="ride">
-			<span class="drum-kit__drum__type">Ride</span>
-		</li>
-	</ul>
+  <ul class="drum-kit">
+    <li class="drum-kit__drum key-clap">
+      <span class="drum-kit__drum__type">Clap</span>
+  		<audio src="wav/clap.wav" />
+  	</li>
+  	<li class="drum-kit__drum key-hihat">
+  	  <span class="drum-kit__drum__type">Hihat</span>
+  		<audio src="wav/hihat.wav" />
+  	</li>
+  	<li class="drum-kit__drum key-kick">
+      <span class="drum-kit__drum__type">Kick</span>
+  		<audio src="wav/kick.wav" />
+  	</li>
+  	<li class="drum-kit__drum key-openhat">
+      <span class="drum-kit__drum__type">Openhat</span>
+  		<audio src="wav/openhat.wav" />
+  	</li>
+  	<li class="drum-kit__drum key-boom">
+      <span class="drum-kit__drum__type">Boom</span>
+  		<audio src="wav/boom.wav" />
+  	</li>
+  	<li class="drum-kit__drum key-ride">
+      <span class="drum-kit__drum__type">Ride</span>
+  		<audio src="wav/ride.wav" />
+  	</li>
+  </ul>
 
-	<script>
-		const allDrumElements = document.getElementsByClassName('drum-kit__drum');
-		const playLog = [];
-		let isPlayed = false;
-
-		for(var i = 0; i < allDrumElements.length; i++){
-			const drumElement = allDrumElements[i];
-			drumElement.addEventListener('click', (e) => {
-				const track = e.target.dataset.track || e.target.parentElement.dataset.track;
-				playLog.push(track);
-			});
-		}
-		// for (const drumElement of allDrumElements) {
-		// 	drumElement.addEventListener('click', (e) => {
-		// 		const track = e.target.dataset.track || e.target.parentElement.dataset.track;
-		// 		playLog.push(track);
-		// 	});
-		// }
-
-		function observable() {
-			if (playLog.length && !isPlayed) {
-				isPlayed = true;
-				const track = playLog.shift();
-				const song = new Audio(`wav/${track}.wav`);
-				song.play();
-				song.addEventListener('ended', () =>  { 
-					song.pause();
-					song.removeAttribute('src');
-					song.load();
-					isPlayed = false;
-				 });
-			}
-		}
-
-		setTimeout(function observer() {
-			observable();
-			setTimeout(observer, 100);
-		}, 2000);
-
-	</script>
+  <script>
+	  const list = document.querySelectorAll('.drum-kit__drum');
+	  list.forEach(i => i.addEventListener('click', e => {
+		  const audio = e.target.querySelector('audio') || e.target.parentNode.querySelector('audio');
+		  audio.play();
+	  }));
+  </script>
 </body>
-
 </html>
